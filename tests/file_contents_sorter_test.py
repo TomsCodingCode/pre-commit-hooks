@@ -12,11 +12,14 @@ from pre_commit_hooks.file_contents_sorter import PASS
     (
         (b'', [], PASS, b''),
         (b'\n', [], FAIL, b''),
+        (b'\r\n', [], FAIL, b''),
         (b'\n\n', [], FAIL, b''),
         (b'lonesome\n', [], PASS, b'lonesome\n'),
         (b'missing_newline', [], FAIL, b'missing_newline\n'),
         (b'newline\nmissing', [], FAIL, b'missing\nnewline\n'),
         (b'missing\nnewline', [], FAIL, b'missing\nnewline\n'),
+        (b'newline\r\nmissing', [], FAIL, b'missing\r\nnewline\r\n'),
+        (b'missing\r\nnewline', [], FAIL, b'missing\r\nnewline\r\n'),
         (b'alpha\nbeta\n', [], PASS, b'alpha\nbeta\n'),
         (b'beta\nalpha\n', [], FAIL, b'alpha\nbeta\n'),
         (b'C\nc\n', [], PASS, b'C\nc\n'),
@@ -25,6 +28,8 @@ from pre_commit_hooks.file_contents_sorter import PASS
         (b'@\n-\n_\n#\n', [], FAIL, b'#\n-\n@\n_\n'),
         (b'extra\n\n\nwhitespace\n', [], FAIL, b'extra\nwhitespace\n'),
         (b'whitespace\n\n\nextra\n', [], FAIL, b'extra\nwhitespace\n'),
+        (b'on\r\nwindows\r\n', [], PASS, b'on\r\nwindows\r\n'),
+        (b'extra\r\n\r\n\r\nwindows\r\n', [], FAIL, b'extra\r\nwindows\r\n'),
         (
             b'fee\nFie\nFoe\nfum\n',
             [],

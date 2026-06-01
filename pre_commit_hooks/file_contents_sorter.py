@@ -29,18 +29,21 @@ def sort_file_contents(
     unique: bool = False,
 ) -> int:
     before = list(f)
+    # detect the line ending style of the file, based on the first line
+    new_line = b'\r\n' if before and before[0].endswith(b'\r\n') else b'\n'
+
     lines: Iterable[bytes] = (
-        line.rstrip(b'\n\r') for line in before if line.strip()
+        line.rstrip(new_line) for line in before if line.strip()
     )
     if unique:
         lines = set(lines)
     after = sorted(lines, key=key)
 
     before_string = b''.join(before)
-    after_string = b'\n'.join(after)
+    after_string = new_line.join(after)
 
     if after_string:
-        after_string += b'\n'
+        after_string += new_line
 
     if before_string == after_string:
         return PASS
